@@ -1,5 +1,5 @@
 
-all: cswap.exe cswap_impl.exe
+all: extract cswap.exe cswap_impl.exe
 
 cswap.exe: Spec.CSwap.fst
 	mkdir -p cswap-ml
@@ -17,5 +17,8 @@ cswap_impl.exe: Impl.CSwap.fst
 	OCAMLPATH="${PATH}" ocamlfind opt -package fstarlib -linkpkg -w -20-26-3-8-58 -w -8-20-26-28-10 -I cswap-ml cswap-ml/Impl_CSwap.ml -o cswap_ct.exe
 	./cswap_ct.exe
 
+extract: cswap.exe cswap_impl.exe
+	krml -I . -skip-compilation -drop FStar,Prims,Spec.CSwap -fparentheses Impl.CSwap.fst
+
 clean:
-	rm -rf cswap-ml cswap.exe cswap_ct.exe
+	rm -rf cswap-ml cswap.exe cswap_ct.exe out.krml *.c *.h
