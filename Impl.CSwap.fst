@@ -69,10 +69,11 @@ val cswap_constant_time_is_correct:
   (ensures (
     let a, b = cswap_constant_time x y c in
     let c, d = cswap x y c in
-    if c = 0ul then a = c /\ b = d else a = d /\ b = c
+    a = c /\ b = d
   ))
 let cswap_constant_time_is_correct x y c =
   cswap_step_rules x y c;
+  xor_rules x y c;
   xor_rules y x c
 
 (* Tests *)
