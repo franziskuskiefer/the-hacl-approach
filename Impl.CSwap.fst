@@ -66,13 +66,10 @@ let cswap_constant_time x y c =
 
 val cswap_constant_time_is_correct:
   x:uint32 -> y:uint32 -> c:uint32{c = 0xFFFFFFFFul \/ c = 0ul} -> Lemma
-  (requires (
-    x = y /\ c = 0ul
-  ))
   (ensures (
     let a, b = cswap_constant_time x y c in
     let c, d = cswap x y c in
-    a = c /\ b = d
+    if c = 0ul then a = c /\ b = d else a = d /\ b = c
   ))
 let cswap_constant_time_is_correct x y c =
   cswap_step_rules x y c;
